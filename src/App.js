@@ -1,24 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { useGetAllPostsQuery } from './services/post';
+import PostList from './components/PostList';
+import Details from './components/Details';
 function App() {
+  const { data, error, isLoading } = useGetAllPostsQuery();
+  console.log(data);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {error ? (
+        <>Oh no, there was an error</>
+      ) : isLoading ? (
+        <>Loading...</>
+      ) : data ? (
+        <>
+          {data.map((post, i) => (
+            <PostList key={post.id} post={post} />
+          ))}
+        </>
+      ) : null}
+
+      <Details />
+    </>
   );
 }
 
